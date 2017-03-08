@@ -38,8 +38,8 @@ public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
     }
 
     @Override
-    public void deleteAll() {
+    public void removeAll() {
         cache.invalidateCache();
-        decoratedRepository.deleteAll();
+        decoratedRepository.removeAll();
     }
 }

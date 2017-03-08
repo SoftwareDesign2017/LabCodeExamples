@@ -1,11 +1,11 @@
 package service;
 
 import model.Book;
-import model.builder.BookBuilderImpl;
 import org.junit.Before;
 import org.junit.Test;
-import repository.BookRepositoryMockImpl;
+import repository.BookRepositoryMock;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -19,23 +19,23 @@ public class BookServiceImplTest {
 
     @Before
     public void setup() {
-        bookService = new BookServiceImpl(new BookRepositoryMockImpl());
+        bookService = new BookServiceImpl(new BookRepositoryMock());
     }
 
     @Test
     public void findAll() throws Exception {
-        assertEquals(bookService.findAll().size(), 10);
+        assertEquals(0, bookService.findAll().size());
     }
 
     @Test
     public void findById() throws Exception {
         Long id = 1L;
-        assertTrue(bookService.findById(id).getId().equals(id));
+        assertNull(bookService.findById(id));
     }
 
     @Test
     public void save() throws Exception {
-        assertFalse(bookService.save(new Book()));
+        assertTrue(bookService.save(new Book()));
     }
 
 }

@@ -3,6 +3,8 @@ package service;
 import model.Book;
 import repository.BookRepository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,5 +32,20 @@ public class BookServiceImpl implements BookService {
     public boolean save(Book book) {
         return repository.save(book);
     }
+
+    @Override
+    public int getAgeOfBook(Long id) {
+        Book book = findById(id);
+        Date publishedDate = book.getPublishedDate();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(publishedDate);
+        int yearOfPublishing = calendar.get(Calendar.YEAR);
+        calendar.setTime(new Date());
+        int yearToday = calendar.get(Calendar.YEAR);
+
+        return yearToday - yearOfPublishing;
+    }
+
 
 }

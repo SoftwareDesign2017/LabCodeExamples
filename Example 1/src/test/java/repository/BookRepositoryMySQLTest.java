@@ -1,16 +1,16 @@
 package repository;
 
+import factory.DBConnectionFactory;
 import model.Book;
-import model.builder.BookBuilderImpl;
-import org.joda.time.DateTime;
+import model.builder.BookBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import utility.JDBConnectionWrapper;
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -19,43 +19,41 @@ import static org.junit.Assert.assertTrue;
 public class BookRepositoryMySQLTest {
 
     private static BookRepository bookRepository;
-    private static JDBConnectionWrapper jdbConnectionWrapper;
 
     @BeforeClass
-    public static void setUp() {
-        jdbConnectionWrapper = new JDBConnectionWrapper();
-        bookRepository = new BookRepositoryCacheDecorator(new BookRepositoryMySQL(jdbConnectionWrapper.getConnection()), new Cache<>());
+    public static void setupClass() {
+        bookRepository = new BookRepositoryCacheDecorator(
+                new BookRepositoryMySQL(
+                        new DBConnectionFactory().getConnectionWrapper(true)
+                ),
+                new Cache<>()
+        );
     }
 
     @Before
-    public void cleanUp() throws Exception {
-        bookRepository.deleteAll();
-    }
-
-    @Test
-    public void testConnection() throws SQLException {
-        assertTrue(jdbConnectionWrapper.testConnection());
+    public void cleanUp() {
+        bookRepository.removeAll();
     }
 
     @Test
     public void findAll() throws Exception {
         List<Book> books = bookRepository.findAll();
-        books = bookRepository.findAll();
-        books = bookRepository.findAll();
-        books = bookRepository.findAll();
-        books = bookRepository.findAll();
-        assertTrue(books.size() == 0);
+        assertEquals(books.size(), 0);
+    }
 
-        bookRepository.save(new BookBuilderImpl()
-                .setId(0L)
-                .setAuthor("Author")
+    @Test
+    public void findAllWhenDbNotEmpty() throws Exception {
+        Book book = new BookBuilder()
                 .setTitle("Title")
-                .setPublishedDate(new DateTime())
-                .build());
+                .setAuthor("Author")
+                .setPublishedDate(new Date())
+                .build();
+        bookRepository.save(book);
+        bookRepository.save(book);
+        bookRepository.save(book);
 
-        books = bookRepository.findAll();
-
-        assertTrue(books.size() == 1);
+        List<Book> books = bookRepository.findAll();
+        assertEquals(books.size(), 3);
     }
 
     @Test
@@ -64,35 +62,19 @@ public class BookRepositoryMySQLTest {
     }
 
     @Test
-    public void deleteAll() throws Exception {
-        bookRepository.save(new BookBuilderImpl()
-                .setAuthor("Author")
-                .setTitle("Title")
-                .setPublishedDate(new DateTime())
-                .build());
-        bookRepository.save(new BookBuilderImpl()
-                .setAuthor("Author")
-                .setTitle("Title")
-                .setPublishedDate(new DateTime())
-                .build());
-        bookRepository.save(new BookBuilderImpl()
-                .setAuthor("Author")
-                .setTitle("Title")
-                .setPublishedDate(new DateTime())
-                .build());
-        assertTrue(bookRepository.findAll().size() == 3);
-
-        bookRepository.deleteAll();
-        assertTrue(bookRepository.findAll().size() == 0);
+    public void save() throws Exception {
+        assertTrue(bookRepository.save(
+                new BookBuilder()
+                        .setTitle("Title")
+                        .setAuthor("Author")
+                        .setPublishedDate(new Date())
+                        .build()
+        ));
     }
 
     @Test
-    public void save() throws Exception {
-        assertTrue(bookRepository.save(new BookBuilderImpl()
-                .setAuthor("Author")
-                .setTitle("Title")
-                .setPublishedDate(new DateTime())
-                .build()));
+    public void removeAll() throws Exception {
+
     }
 
 }

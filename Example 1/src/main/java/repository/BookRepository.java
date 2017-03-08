@@ -15,6 +15,6 @@ public interface BookRepository {
 
     boolean save(Book book);
 
-    void deleteAll();
+    void removeAll();
 
 }

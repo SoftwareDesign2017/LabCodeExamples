@@ -1,8 +1,8 @@
 package repository;
 
 import model.Book;
-import model.builder.BookBuilderImpl;
-import org.joda.time.DateTime;
+import model.builder.BookBuilder;
+import utility.JDBConnectionWrapper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,15 +13,15 @@ import java.util.List;
  */
 public class BookRepositoryMySQL implements BookRepository {
 
+    private final JDBConnectionWrapper connectionWrapper;
 
-    private final Connection connection;
-
-    public BookRepositoryMySQL(Connection connection) {
-        this.connection = connection;
+    public BookRepositoryMySQL(JDBConnectionWrapper connectionWrapper) {
+        this.connectionWrapper = connectionWrapper;
     }
 
     @Override
     public List<Book> findAll() {
+        Connection connection = connectionWrapper.getConnection();
         List<Book> books = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -45,11 +45,13 @@ public class BookRepositoryMySQL implements BookRepository {
 
     @Override
     public boolean save(Book book) {
+        Connection connection = connectionWrapper.getConnection();
         try {
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO book values (null, ?, ?, ?)");
+            PreparedStatement insertStatement = connection
+                    .prepareStatement("INSERT INTO book values (null, ?, ?, ?)");
             insertStatement.setString(1, book.getAuthor());
             insertStatement.setString(2, book.getTitle());
-            insertStatement.setDate(3, new java.sql.Date(book.getPublishedDate().getMillis()));
+            insertStatement.setDate(3, new java.sql.Date(book.getPublishedDate().getTime()));
             insertStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -59,7 +61,8 @@ public class BookRepositoryMySQL implements BookRepository {
     }
 
     @Override
-    public void deleteAll() {
+    public void removeAll() {
+        Connection connection = connectionWrapper.getConnection();
         try {
             Statement statement = connection.createStatement();
             String sql = "DELETE from book where id >= 0";
@@ -70,11 +73,11 @@ public class BookRepositoryMySQL implements BookRepository {
     }
 
     private Book getBookFromResultSet(ResultSet rs) throws SQLException {
-        return new BookBuilderImpl()
+        return new BookBuilder()
                 .setId(rs.getLong("id"))
                 .setTitle(rs.getString("title"))
                 .setAuthor(rs.getString("author"))
-                .setPublishedDate(new DateTime(rs.getDate("publishedDate")))
+                .setPublishedDate(new Date(rs.getDate("publishedDate").getTime()))
                 .build();
     }
 

@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Created by Alex on 07/03/2017.
+ * Created by Alex on 08/03/2017.
  */
 public class JDBConnectionWrapper {
 
+
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/library";
+    private static final String DB_URL = "jdbc:mysql://localhost/";
 
     private static final String USER = "root";
     private static final String PASS = "root";
@@ -19,10 +20,10 @@ public class JDBConnectionWrapper {
 
     private Connection connection;
 
-    public JDBConnectionWrapper() {
+    public JDBConnectionWrapper(String schema) {
         try {
             Class.forName(JDBC_DRIVER);
-            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            connection = DriverManager.getConnection(DB_URL + schema, USER, PASS);
             createTables();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -32,15 +33,15 @@ public class JDBConnectionWrapper {
     private void createTables() throws SQLException {
         Statement statement = connection.createStatement();
 
-        String sql = "CREATE TABLE IF NOT EXISTS book (\n" +
-                "  id INT NOT NULL,\n" +
-                "  author VARCHAR(500) NOT NULL,\n" +
-                "  title VARCHAR(500) NOT NULL,\n" +
-                "  publishedDate DATETIME NULL,\n" +
-                "  PRIMARY KEY (id),\n" +
-                "  UNIQUE INDEX id_UNIQUE (id ASC)); ";
+        String sql = "CREATE TABLE IF NOT EXISTS book (" +
+                "  id int(11) NOT NULL AUTO_INCREMENT," +
+                "  author varchar(500) NOT NULL," +
+                "  title varchar(500) NOT NULL," +
+                "  publishedDate datetime DEFAULT NULL," +
+                "  PRIMARY KEY (id)," +
+                "  UNIQUE KEY id_UNIQUE (id)" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
         statement.execute(sql);
-        System.out.println("Created book table");
     }
 
     public boolean testConnection() throws SQLException {

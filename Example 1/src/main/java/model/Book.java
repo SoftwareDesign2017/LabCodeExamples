@@ -1,6 +1,6 @@
 package model;
 
-import org.joda.time.DateTime;
+import java.util.Date;
 
 /**
  * Created by Alex on 07/03/2017.
@@ -11,7 +11,7 @@ public class Book {
 
     private String author;
     private String title;
-    private DateTime publishedDate;
+    private Date publishedDate;
 
     public String getAuthor() {
         return author;
@@ -29,11 +29,11 @@ public class Book {
         this.title = title;
     }
 
-    public DateTime getPublishedDate() {
+    public Date getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(DateTime publishedDate) {
+    public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
 

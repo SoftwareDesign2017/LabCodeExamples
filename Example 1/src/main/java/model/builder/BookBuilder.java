@@ -1,20 +1,41 @@
 package model.builder;
 
 import model.Book;
-import org.joda.time.DateTime;
+
+import java.util.Date;
 
 /**
  * Created by Alex on 07/03/2017.
  */
-public interface BookBuilder {
+public class BookBuilder {
 
-    BookBuilder setAuthor(String author);
+    private Book book;
 
-    BookBuilder setTitle(String title);
+    public BookBuilder() {
+        book = new Book();
+    }
 
-    BookBuilder setPublishedDate(DateTime publishedDate);
+    public BookBuilder setAuthor(String author) {
+        book.setAuthor(author);
+        return this;
+    }
 
-    BookBuilder setId(Long id);
+    public BookBuilder setTitle(String title) {
+        book.setTitle(title);
+        return this;
+    }
 
-    Book build();
+    public BookBuilder setPublishedDate(Date publishedDate) {
+        book.setPublishedDate(publishedDate);
+        return this;
+    }
+
+    public BookBuilder setId(Long id) {
+        book.setId(id);
+        return this;
+    }
+
+    public Book build() {
+        return book;
+    }
 }
