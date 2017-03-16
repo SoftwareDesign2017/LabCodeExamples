@@ -41,7 +41,9 @@ public class AuthenticationServiceMySQLTest {
 
     @Test
     public void register() throws Exception {
-        Assert.assertTrue(authenticationService.register("Test Username", "Test Password"));
+        Assert.assertTrue(
+                authenticationService.register("Test Username", "Test Password")
+        );
     }
 
     @Test
@@ -49,6 +51,7 @@ public class AuthenticationServiceMySQLTest {
         String username = "TEST";
         String password = "123456";
         authenticationService.register(username, password);
+
         User user = authenticationService.login(username, password);
 
         Assert.assertNotNull(user);

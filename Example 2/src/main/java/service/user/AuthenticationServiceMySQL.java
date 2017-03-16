@@ -30,7 +30,8 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
 
         Role customerRole = rightsRolesRepository.findRoleByTitle(CUSTOMER);
 
-        User user = new UserBuilder().setUsername(username)
+        User user = new UserBuilder()
+                .setUsername(username)
                 .setPassword(encodedPassword)
                 .setRoles(Collections.singletonList(customerRole))
                 .build();
@@ -48,11 +49,11 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
         return false;
     }
 
-    private static String encodePassword(String password) {
+    private String encodePassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
+            StringBuilder hexString = new StringBuilder();
 
             for (int i = 0; i < hash.length; i++) {
                 String hex = Integer.toHexString(0xff & hash[i]);

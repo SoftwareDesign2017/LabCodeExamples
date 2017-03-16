@@ -22,7 +22,7 @@ public class Boostrap {
     private static RightsRolesRepository rightsRolesRepository;
 
     public static void main(String[] args) throws SQLException {
-//        dropAll();
+        dropAll();
 
         bootstrapTables();
 
@@ -36,7 +36,14 @@ public class Boostrap {
             Connection connection = new JDBConnectionWrapper(schema).getConnection();
             Statement statement = connection.createStatement();
 
-            String dropSQL = "TRUNCATE role_right; DROP TABLE role_right; TRUNCATE `right`; DROP TABLE `right`; TRUNCATE `user_role`; DROP TABLE `user_role`; TRUNCATE `role`; DROP TABLE  book, role, `user`;";
+            String dropSQL = "TRUNCATE `role_right`; \n" +
+                    "DROP TABLE `role_right`; \n" +
+                    "TRUNCATE `right`; \n" +
+                    "DROP TABLE `right`; \n" +
+                    "TRUNCATE `user_role`; \n" +
+                    "DROP TABLE `user_role`; \n" +
+                    "TRUNCATE `role`; \n" +
+                    "DROP TABLE  `book`, `role`, `user`;";
 
             statement.execute(dropSQL);
         }
