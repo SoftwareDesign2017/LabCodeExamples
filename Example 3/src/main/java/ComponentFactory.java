@@ -14,6 +14,7 @@ import java.sql.Connection;
 public class ComponentFactory {
 
     private final AuthenticationService authenticationService;
+
     private final UserRepository userRepository;
     private final RightsRolesRepository rightsRolesRepository;
 
@@ -35,5 +36,13 @@ public class ComponentFactory {
 
     public AuthenticationService getAuthenticationService() {
         return authenticationService;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public RightsRolesRepository getRightsRolesRepository() {
+        return rightsRolesRepository;
     }
 }

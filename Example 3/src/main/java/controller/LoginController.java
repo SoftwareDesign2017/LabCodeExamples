@@ -51,7 +51,7 @@ public class LoginController {
                 JOptionPane.showMessageDialog(loginView.getContentPane(), registerNotification.getFormattedErrors());
             } else {
                 if (!registerNotification.getResult()) {
-                    JOptionPane.showMessageDialog(loginView.getContentPane(), "Registration not successful");
+                    JOptionPane.showMessageDialog(loginView.getContentPane(), "Registration not successful, please try again later.");
                 } else {
                     JOptionPane.showMessageDialog(loginView.getContentPane(), "Registration successful!");
                 }
