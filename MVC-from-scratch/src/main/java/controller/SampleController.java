@@ -1,71 +1,56 @@
 package controller;
 
-import command.Command;
-import command.SetTextCommand;
+import command.ChangeFieldCommand;
 import model.SampleModel;
 import view.SampleView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Alex on 27/03/2017.
+ * Created by Alex on 29/03/2017.
  */
 public class SampleController implements Observer {
 
-    private final List<Command> commands;
-
+    private final CommandStack commandStack;
     private final SampleView view;
     private final SampleModel model;
 
     public SampleController(SampleView view, SampleModel model) {
+        this.commandStack = new CommandStack();
         this.view = view;
         this.model = model;
-        this.view.addUpdateButtonListener(new UpdateButtonListener());
-        this.view.addUndoButtonListener(new UndoButtonListener());
-        this.commands = new ArrayList<>();
-        commands.add(getEmptyTextCommand());
+        view.addUpdateButtonListener(new UpdateButtonListener());
+        view.addUndoButtonListener(new UndoButtonListener());
+        view.addRedoButtonListener(new RedoButtonListener());
         model.addObserver(this);
+        commandStack.push(new ChangeFieldCommand("", model));
     }
 
     public void update(Observable o, Object arg) {
-        String fieldText = model.getField();
-        view.updateFieldA(fieldText);
-        view.updateFieldB(fieldText);
+        view.updateFieldA(model.getField());
+        view.updateFieldB(model.getField());
     }
 
-    private final class UpdateButtonListener implements ActionListener {
+    private class UpdateButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String fieldAText = view.getFieldAText();
-            model.setField(fieldAText);
-            commands.add(new SetTextCommand(model, view.getFieldAText()));
+            ChangeFieldCommand changeFieldCommand = new ChangeFieldCommand(view.getFieldAText(), model);
+            commandStack.push(changeFieldCommand);
+            changeFieldCommand.execute();
         }
     }
 
-    private final class UndoButtonListener implements ActionListener {
-        @Override
+    private class UndoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (!commands.isEmpty()) {
-                commands.remove(commands.size() - 1);
-            }
-            if (commands.isEmpty()) {
-                commands.add(getEmptyTextCommand());
-            }
-            executeCommands();
+            commandStack.undo().execute();
         }
     }
 
-    private void executeCommands() {
-        commands.forEach(Command::apply);
+    private class RedoButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            commandStack.redo().execute();
+        }
     }
-
-    private SetTextCommand getEmptyTextCommand() {
-        return new SetTextCommand(model, "");
-    }
-
-
 }

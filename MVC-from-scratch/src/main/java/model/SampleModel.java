@@ -3,11 +3,9 @@ package model;
 import java.util.Observable;
 
 /**
- * Created by Alex on 27/03/2017.
+ * Created by Alex on 29/03/2017.
  */
 public class SampleModel extends Observable {
-
-    private String field;
 
     public String getField() {
         return field;
@@ -18,5 +16,7 @@ public class SampleModel extends Observable {
         setChanged();
         notifyObservers();
     }
+
+    private String field;
 
 }
