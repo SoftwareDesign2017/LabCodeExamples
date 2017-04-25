@@ -31,7 +31,7 @@ class AuthorSpec extends Specification {
 
         when: "we have a valid author"
         author = author.with {
-            it.dateOfBirth = new DateTime()
+            it.dateOfBirth = new Date()
             it
         }
 
@@ -56,7 +56,7 @@ class AuthorSpec extends Specification {
         given: "a valid and persisted author"
         def author = new Author().with {
             it.name = "Author Name"
-            it.dateOfBirth = new DateTime()
+            it.dateOfBirth = new Date()
             it
         }
         author.save()

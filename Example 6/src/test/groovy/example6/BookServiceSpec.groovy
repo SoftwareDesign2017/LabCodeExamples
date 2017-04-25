@@ -46,13 +46,13 @@ class BookServiceSpec extends Specification {
 
         def author1 = new Author().with {
             it.name = "Author 1"
-            it.dateOfBirth = new DateTime()
+            it.dateOfBirth = new Date()
             it
         }.save()
 
         def author2 = new Author().with {
             it.name = "Author 2"
-            it.dateOfBirth = new DateTime()
+            it.dateOfBirth = new Date()
             it
         }.save()
 

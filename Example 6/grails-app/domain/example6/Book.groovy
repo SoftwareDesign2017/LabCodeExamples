@@ -17,7 +17,7 @@ class Book {
         })
     }
     static mapping = {
-        datasources(['inMemoryDb', 'mysqlDataSource'])
+        datasources(['mysqlDataSource'])
         author cascade: 'all'
     }
 

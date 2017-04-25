@@ -4,91 +4,91 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = false)
-class BookController {
+class AuthorController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Book.list(params), model:[bookCount: Book.count()]
+        respond Author.list(params), model:[authorCount: Author.count()]
     }
 
-    def show(Book book) {
-        respond book
+    def show(Author author) {
+        respond author
     }
 
     def create() {
-        respond new Book(params)
+        respond new Author(params)
     }
 
     @Transactional
-    def save(Book book) {
-        if (book == null) {
+    def save(Author author) {
+        if (author == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (book.hasErrors()) {
+        if (author.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond book.errors, view:'create'
+            respond author.errors, view:'create'
             return
         }
 
-        book.save flush:true
+        author.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), book.id])
-                redirect book
+                flash.message = message(code: 'default.created.message', args: [message(code: 'author.label', default: 'Author'), author.id])
+                redirect author
             }
-            '*' { respond book, [status: CREATED] }
+            '*' { respond author, [status: CREATED] }
         }
     }
 
-    def edit(Book book) {
-        respond book
+    def edit(Author author) {
+        respond author
     }
 
     @Transactional
-    def update(Book book) {
-        if (book == null) {
+    def update(Author author) {
+        if (author == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (book.hasErrors()) {
+        if (author.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond book.errors, view:'edit'
+            respond author.errors, view:'edit'
             return
         }
 
-        book.save flush:true
+        author.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), book.id])
-                redirect book
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'author.label', default: 'Author'), author.id])
+                redirect author
             }
-            '*'{ respond book, [status: OK] }
+            '*'{ respond author, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Book book) {
+    def delete(Author author) {
 
-        if (book == null) {
+        if (author == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        book.delete flush:true
+        author.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'book.label', default: 'Book'), book.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'author.label', default: 'Author'), author.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -98,7 +98,7 @@ class BookController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'author.label', default: 'Author'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

@@ -2,10 +2,12 @@ package example6
 
 import org.joda.time.DateTime
 
+import java.util.Date
+
 class Author {
 
     String name
-    DateTime dateOfBirth
+    Date dateOfBirth
 
     static hasMany = [books: Book]
 
@@ -14,7 +16,8 @@ class Author {
         dateOfBirth(nullable: false)
     }
     static mapping = {
-        datasources(['inMemoryDb','mysqlDataSource'])
+        datasources(['mysqlDataSource'])
         books cascade: 'all-delete-orphan'
+        books lazy: false
     }
 }
