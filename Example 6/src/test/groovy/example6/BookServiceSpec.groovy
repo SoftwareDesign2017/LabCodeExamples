@@ -2,9 +2,8 @@ package example6
 
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
-import org.joda.time.DateTime
-import org.joda.time.LocalDate
 import spock.lang.Specification
+
 
 /**
  * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
@@ -33,7 +32,7 @@ class BookServiceSpec extends Specification {
         author.save()
 
         when: "we publish the book"
-        service.publishBook(book, new LocalDate(), author)
+        service.publishBook(book, new Date(), author)
 
         then: "the book should be published and the author should have the book"
         book.isPublished()
@@ -59,7 +58,7 @@ class BookServiceSpec extends Specification {
         def book = new Book().with {
             it.title = "Book title"
             it.author = author1
-            it.dateOfPublishing = new DateTime()
+            it.dateOfPublishing = new Date()
             it
         }.save()
 

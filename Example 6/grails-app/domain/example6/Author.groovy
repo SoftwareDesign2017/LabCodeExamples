@@ -1,9 +1,5 @@
 package example6
 
-import org.joda.time.DateTime
-
-import java.util.Date
-
 class Author {
 
     String name
@@ -16,8 +12,12 @@ class Author {
         dateOfBirth(nullable: false)
     }
     static mapping = {
-        datasources(['mysqlDataSource'])
         books cascade: 'all-delete-orphan'
         books lazy: false
+    }
+
+    @Override
+    String toString() {
+        return id + " : " + name
     }
 }

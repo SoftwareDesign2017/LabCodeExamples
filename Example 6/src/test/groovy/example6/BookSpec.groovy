@@ -1,7 +1,6 @@
 package example6
 
 import grails.test.mixin.TestFor
-import org.joda.time.DateTime
 import spock.lang.Specification
 
 /**
@@ -40,7 +39,7 @@ class BookSpec extends Specification {
 
         when: "we publish the book"
         book = book.with {
-            it.dateOfPublishing = new DateTime()
+            it.dateOfPublishing = new Date()
             it
         }
         then: "the book should be marked as published but should be invalid due to the lack of author"

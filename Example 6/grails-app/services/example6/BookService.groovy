@@ -1,7 +1,6 @@
 package example6
 
 import grails.transaction.Transactional
-import org.joda.time.DateTime
 
 @Transactional
 class BookService {
@@ -10,7 +9,7 @@ class BookService {
 
     def changeAuthor(Book book, Long newAuthorId) {
         def newAuthor = authorService.findById(newAuthorId)
-        if(newAuthor) {
+        if (newAuthor) {
             def previousAuthor = book.author
             previousAuthor.removeFromBooks(book)
             previousAuthor.save()
@@ -21,7 +20,7 @@ class BookService {
         }
     }
 
-    def publishBook(Book book, DateTime dateOfPublishing, Author author) {
+    def publishBook(Book book, Date dateOfPublishing, Author author) {
         book.dateOfPublishing = dateOfPublishing
         book.author = author
         book.save()

@@ -1,11 +1,9 @@
 package example6
 
-import org.joda.time.DateTime
-
 class Book {
 
     String title
-    DateTime dateOfPublishing
+    Date dateOfPublishing
 
     static belongsTo = [author: Author]
 
@@ -17,7 +15,6 @@ class Book {
         })
     }
     static mapping = {
-        datasources(['mysqlDataSource'])
         author cascade: 'all'
     }
 
