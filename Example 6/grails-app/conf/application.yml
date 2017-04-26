@@ -99,20 +99,29 @@ hibernate:
 dataSource:
     pooled: true
     jmxExport: true
-    driverClassName: com.mysql.jdbc.Driver
-    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    username: root
-    password: root
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
 
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            pooled: true
+            jmxExport: true
+            driverClassName: com.mysql.jdbc.Driver
             url: jdbc:mysql://localhost/grails_dev
+            dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+            username: root
+            password: root
     test:
         dataSource:
-            dbCreate: update
-            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            driverClassName: org.h2.Driver
+            dbCreate: create-drop
+            pooled: true
+            jmxExport: true
+            username: sa
+            password:
+            url: jdbc:h2:./testDB
     production:
         dataSource:
             dbCreate: none
