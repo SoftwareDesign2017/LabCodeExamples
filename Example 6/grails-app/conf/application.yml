@@ -96,32 +96,34 @@ hibernate:
         use_query_cache: false
         region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 
-dataSource:
-    pooled: true
-    jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+dataSources:
+    dataSource:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        driverClassName: com.mysql.jdbc.Driver
+        username: root
+        password: root
+        url: jdbc:mysql://localhost/grails_dev
+        dbCreate: update
+    inmem:
+        pooled: true
+        jmxExport: true
+        driverClassName: org.h2.Driver
+        username: sa
+        password:
 
 environments:
     development:
-        dataSource:
-            pooled: true
-            jmxExport: true
-            driverClassName: com.mysql.jdbc.Driver
-            url: jdbc:mysql://localhost/grails_dev
-            dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-            username: root
-            password: root
+        dataSources:
+            dataSource:
+                dbCreate: create-drop
+                driverClassName: com.mysql.jdbc.Driver
+                url: jdbc:mysql://localhost/grails_dev
     test:
-        dataSource:
-            driverClassName: org.h2.Driver
-            dbCreate: create-drop
-            pooled: true
-            jmxExport: true
-            username: sa
-            password:
-            url: jdbc:h2:./testDB
+        dataSources:
+            dataSource:
+                dbCreate: create-drop
+                driverClassName: org.h2.Driver
+                url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
             dbCreate: none
