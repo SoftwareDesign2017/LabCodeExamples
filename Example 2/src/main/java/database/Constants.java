@@ -53,17 +53,17 @@ public class Constants {
     }
 
     public static Map<String, List<String>> getRolesRights() {
-        Map<String, List<String>> ROLES_RIGHTS = new HashMap<>();
+        Map<String, List<String>> rolesRights = new HashMap<>();
         for (String role : ROLES) {
-            ROLES_RIGHTS.put(role, new ArrayList<>());
+            rolesRights.put(role, new ArrayList<>());
         }
-        ROLES_RIGHTS.get(ADMINISTRATOR).addAll(Arrays.asList(RIGHTS));
+        rolesRights.get(ADMINISTRATOR).addAll(Arrays.asList(RIGHTS));
 
-        ROLES_RIGHTS.get(EMPLOYEE).addAll(Arrays.asList(CREATE_BOOK, DELETE_BOOK, UPDATE_BOOK, SELL_BOOK));
+        rolesRights.get(EMPLOYEE).addAll(Arrays.asList(CREATE_BOOK, DELETE_BOOK, UPDATE_BOOK, SELL_BOOK));
 
-        ROLES_RIGHTS.get(CUSTOMER).addAll(Arrays.asList(SELL_BOOK, BUY_BOOK, RETURN_BOOK));
+        rolesRights.get(CUSTOMER).addAll(Arrays.asList(SELL_BOOK, BUY_BOOK, RETURN_BOOK));
 
-        return ROLES_RIGHTS;
+        return rolesRights;
     }
 
 }

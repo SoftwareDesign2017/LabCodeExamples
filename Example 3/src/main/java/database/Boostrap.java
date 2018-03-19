@@ -6,6 +6,7 @@ import repository.security.RightsRolesRepositoryMySQL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,16 +37,23 @@ public class Boostrap {
             Connection connection = new JDBConnectionWrapper(schema).getConnection();
             Statement statement = connection.createStatement();
 
-            String dropSQL = "TRUNCATE `role_right`; \n" +
-                    "DROP TABLE `role_right`; \n" +
-                    "TRUNCATE `right`; \n" +
-                    "DROP TABLE `right`; \n" +
-                    "TRUNCATE `user_role`; \n" +
-                    "DROP TABLE `user_role`; \n" +
-                    "TRUNCATE `role`; \n" +
-                    "DROP TABLE  `book`, `role`, `user`;";
+            String[] dropStatements = {
+                    "TRUNCATE `role_right`;",
+                    "DROP TABLE `role_right`;",
+                    "TRUNCATE `right`;",
+                    "TRUNCATE `user_role`;",
+                    "DROP TABLE `user_role`;",
+                    "TRUNCATE `role`;",
+                    "DROP TABLE  `book`, `role`, `user`;"
+            };
 
-            statement.execute(dropSQL);
+            Arrays.stream(dropStatements).forEach(dropStatement -> {
+                try {
+                    statement.execute(dropStatement);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         System.out.println("Done table bootstrap");
