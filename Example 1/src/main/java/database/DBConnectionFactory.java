@@ -1,4 +1,4 @@
-package factory;
+package database;
 
 import utility.JDBConnectionWrapper;
 

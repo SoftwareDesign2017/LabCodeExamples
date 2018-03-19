@@ -1,6 +1,6 @@
 package repository;
 
-import factory.DBConnectionFactory;
+import database.DBConnectionFactory;
 import model.Book;
 import model.builder.BookBuilder;
 import org.junit.Before;
