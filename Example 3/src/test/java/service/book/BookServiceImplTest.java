@@ -3,13 +3,10 @@ package service.book;
 import model.Book;
 import org.junit.Before;
 import org.junit.Test;
+import repository.EntityNotFoundException;
 import repository.book.BookRepositoryMock;
-import service.book.BookService;
-import service.book.BookServiceImpl;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -29,10 +26,9 @@ public class BookServiceImplTest {
         assertEquals(0, bookService.findAll().size());
     }
 
-    @Test
-    public void findById() throws Exception {
-        Long id = 1L;
-        assertNull(bookService.findById(id));
+    @Test(expected = EntityNotFoundException.class)
+    public void findByIdEx() throws Exception {
+        bookService.findById(1L);
     }
 
     @Test

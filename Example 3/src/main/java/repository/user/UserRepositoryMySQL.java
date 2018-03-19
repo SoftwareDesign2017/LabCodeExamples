@@ -30,27 +30,27 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public Notification<User> findByUsernameAndPassword(String username, String password) {
+    public Notification<User> findByUsernameAndPassword(String username, String password) throws AuthenticationException {
         Notification<User> findByUsernameAndPasswordNotification = new Notification<>();
-
         try {
             Statement statement = connection.createStatement();
-
             String fetchUserSql = "Select * from `" + USER + "` where `username`=\'" + username + "\' and `password`=\'" + password + "\'";
             ResultSet userResultSet = statement.executeQuery(fetchUserSql);
-            userResultSet.next();
-
-            User user = new UserBuilder()
-                    .setUsername(userResultSet.getString("username"))
-                    .setPassword(userResultSet.getString("password"))
-                    .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
-                    .build();
-            findByUsernameAndPasswordNotification.setResult(user);
-            return findByUsernameAndPasswordNotification;
+            if (userResultSet.next()) {
+                User user = new UserBuilder()
+                        .setUsername(userResultSet.getString("username"))
+                        .setPassword(userResultSet.getString("password"))
+                        .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
+                        .build();
+                findByUsernameAndPasswordNotification.setResult(user);
+                return findByUsernameAndPasswordNotification;
+            } else {
+                findByUsernameAndPasswordNotification.addError("Invalid email or password!");
+                return findByUsernameAndPasswordNotification;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            findByUsernameAndPasswordNotification.addError("Invalid email or password!");
-            return findByUsernameAndPasswordNotification;
+            throw new AuthenticationException();
         }
     }
 

@@ -6,13 +6,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import repository.Cache;
-import repository.book.BookRepository;
-import repository.book.BookRepositoryCacheDecorator;
-import repository.book.BookRepositoryMock;
+import repository.EntityNotFoundException;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -40,10 +37,9 @@ public class BookRepositoryMockTest {
         assertTrue(repository.findAll().size() == 0);
     }
 
-    @Test
-    public void findById() throws Exception {
-        Book book = repository.findById(1L);
-        assertNull(book);
+    @Test(expected = EntityNotFoundException.class)
+    public void findByIdEx() throws Exception {
+        repository.findById(1L);
     }
 
     @Test

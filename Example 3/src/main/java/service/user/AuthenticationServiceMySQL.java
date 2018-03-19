@@ -6,6 +6,7 @@ import model.builder.UserBuilder;
 import model.validation.Notification;
 import model.validation.UserValidator;
 import repository.security.RightsRolesRepository;
+import repository.user.AuthenticationException;
 import repository.user.UserRepository;
 
 import java.security.MessageDigest;
@@ -46,12 +47,12 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
         } else {
             user.setPassword(encodePassword(password));
             userRegisterNotification.setResult(userRepository.save(user));
-            return  userRegisterNotification;
+            return userRegisterNotification;
         }
     }
 
     @Override
-    public Notification<User> login(String username, String password) {
+    public Notification<User> login(String username, String password) throws AuthenticationException {
         return userRepository.findByUsernameAndPassword(username, encodePassword(password));
     }
 
