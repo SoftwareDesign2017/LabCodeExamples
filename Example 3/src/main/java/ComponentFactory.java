@@ -20,15 +20,15 @@ public class ComponentFactory {
 
     private static ComponentFactory instance;
 
-    public static ComponentFactory instance() {
+    public static ComponentFactory instance(Boolean componentsForTests) {
         if (instance == null) {
-            instance = new ComponentFactory();
+            instance = new ComponentFactory(componentsForTests);
         }
         return instance;
     }
 
-    private ComponentFactory() {
-        Connection connection = new DBConnectionFactory().getConnectionWrapper(false).getConnection();
+    private ComponentFactory(Boolean componentsForTests) {
+        Connection connection = new DBConnectionFactory().getConnectionWrapper(componentsForTests).getConnection();
         this.rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
         this.userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
         this.authenticationService = new AuthenticationServiceMySQL(this.userRepository, this.rightsRolesRepository);

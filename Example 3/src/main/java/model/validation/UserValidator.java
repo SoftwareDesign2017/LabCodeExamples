@@ -14,13 +14,13 @@ public class UserValidator {
     private static final String EMAIL_VALIDATION_REGEX = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     private static final int MIN_PASSWORD_LENGTH = 8;
 
-    private final User user;
-
     public List<String> getErrors() {
         return errors;
     }
 
     private final List<String> errors;
+
+    private final User user;
 
     public UserValidator(User user) {
         this.user = user;
@@ -60,7 +60,7 @@ public class UserValidator {
         return m.find();
     }
 
-    private static boolean containsDigit(String s) {
+    private boolean containsDigit(String s) {
         if (s != null && !s.isEmpty()) {
             for (char c : s.toCharArray()) {
                 if (Character.isDigit(c)) {
